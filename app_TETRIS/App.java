@@ -24,11 +24,11 @@ public class App extends JFrame {
         this.ga = new GameArea();
         this.nextMino = new Mino();
         this.playerName = playerName; 
-        new GameThread(mino, ga, nextMino, this).start();
-        initControls();
+        new GameThread(mino, ga, nextMino, this).start();//gameThread start
+        initControls(); 
 
         setTitle("Tetris");
-        setSize(500, 640); 
+        setSize(500, 640); //screen size setting
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -54,7 +54,7 @@ public class App extends JFrame {
         String finalName = name;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new App(finalName).setVisible(true);
+                new App(finalName).setVisible(true);//app instanate,visible 
             }
         });
         sc.close();
@@ -77,6 +77,7 @@ public class App extends JFrame {
         isPaused = !isPaused;
     }
 
+    // input initialazation
     private void initControls() {
         InputMap im = this.getRootPane().getInputMap();
         ActionMap am = this.getRootPane().getActionMap();
@@ -135,27 +136,28 @@ public class App extends JFrame {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g; 
 
-    
+        //background set White
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-       
+       //scoreborad display
         g2d.setColor(Color.BLACK);
         g2d.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 30, 50);
 
-       
+       //playername disaplay
         g2d.drawString("Player: " + playerName, (ga.getFieldWidth() + 1) * 30, 70);
 
-     
+        //Game filed drawing
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
-                if (ga.getField()[y][x] == 1) {
+                if (ga.getField()[y][x] == 1) {///if block on the fieled
                     g2d.setColor(ga.getFieldColors()[y][x]); 
-                    g2d.fillRect(x * 30, y * 30, 30, 30);
+                    g2d.fillRect(x * 30, y * 30, 30, 30);//fill mino
+                    
                     g2d.setColor(Color.DARK_GRAY); 
                     g2d.setStroke(new BasicStroke(3)); 
-                    g2d.drawRect(x * 30, y * 30, 30, 30);
-                } else {
+                    g2d.drawRect(x * 30, y * 30, 30, 30);//fill blank block border
+                } else {//blank block
                     g2d.setColor(Color.BLACK); 
                     g2d.fillRect(x * 30, y * 30, 30, 30);
                     g2d.setColor(Color.DARK_GRAY); 
@@ -165,11 +167,11 @@ public class App extends JFrame {
             }
         }
 
-        
+        //mino drawing
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
-                                       g2d.setColor(mino.getColor());
+                    g2d.setColor(mino.getColor());
                     g2d.fillRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30);
                     g2d.setColor(Color.BLACK); 
                     g2d.setStroke(new BasicStroke(3)); 
@@ -178,10 +180,10 @@ public class App extends JFrame {
             }
         }
 
-       
+       //draw next mino
         drawNextMino(g2d, nextMino);
 
-     
+        //Logo display
         g2d.setColor(Color.BLACK);
         g2d.setFont(g2d.getFont().deriveFont(java.awt.Font.BOLD));
         g2d.drawString("TCS_B group", getWidth() - 100, getHeight() - 30);
