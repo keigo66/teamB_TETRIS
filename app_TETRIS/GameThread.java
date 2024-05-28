@@ -27,7 +27,7 @@ public class GameThread extends Thread {
         while (true) {
             if (app.isPaused()) {
                 try {
-                    Thread.sleep(100); // ?’â??Šu100Ÿ|•b??ˆêŸ¥”Û‰ø?
+                    Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GameThread.class.getName()).log(Level.SEVERE, null, ex);
                 }

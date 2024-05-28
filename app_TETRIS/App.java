@@ -154,7 +154,7 @@ public class App extends JFrame {
                     g2d.fillRect(x * 30, y * 30, 30, 30);
                     g2d.setColor(Color.DARK_GRAY); 
                     g2d.setStroke(new BasicStroke(3)); 
-                    g2d.drawRect(x * 30, y * 30, 30, 30); // ?êß?ûy
+                    g2d.drawRect(x * 30, y * 30, 30, 30);
                 } else {
                     g2d.setColor(Color.BLACK); 
                     g2d.fillRect(x * 30, y * 30, 30, 30);

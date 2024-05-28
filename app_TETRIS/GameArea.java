@@ -85,7 +85,7 @@ public class GameArea {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 field[y][x] = bufferField[y][x];
-                fieldColors[y][x] = bufferFieldColors[y][x]; // 初始化?色数?
+                fieldColors[y][x] = bufferFieldColors[y][x];
             }
         }
     }
@@ -94,7 +94,7 @@ public class GameArea {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 bufferField[y][x] = 0;
-                bufferFieldColors[y][x] = null; // 初始化?冲区?色数?
+                bufferFieldColors[y][x] = null;
             }
         }
         for (int y = 0; y < getFieldHight(); y++) {
@@ -108,7 +108,7 @@ public class GameArea {
     public void drawField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
-                System.out.printf("%s", (field[y][x] == 1 ? "■" : "□"));
+                System.out.printf("%s", (field[y][x] == 1 ? "笆" : "笆｡"));
             }
             System.out.println();
         }
@@ -121,7 +121,7 @@ public class GameArea {
         int[][][] m = nextMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
-                System.out.printf("%s", (m[0][y][x] == 1 ? "■" : "□"));
+                System.out.printf("%s", (m[0][y][x] == 1 ? "笆" : "笆｡"));
             }
             System.out.println();
         }
@@ -156,7 +156,7 @@ public class GameArea {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
                     this.bufferField[mino.getMinoY() + y][mino.getMinoX() + x] = 1;
-                    this.bufferFieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor(); // ?置?冲区?色
+                    this.bufferFieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor();
                 }
             }
         }
@@ -194,7 +194,7 @@ public class GameArea {
 
     public void eraseLine() {
         boolean isFill;
-        int linesCleared = 0; // ??消除的行数
+        int linesCleared = 0;
 
         for (int y = getFieldHight() - 2; y > 0; y--) {
             isFill = true;
@@ -206,7 +206,7 @@ public class GameArea {
             }
             if (isFill) {
                 linesCleared++;
-                // 消除行
+                
                 for (int _y = y; _y > 0; _y--) {
                     for (int x = 1; x < getFieldWidth() - 1; x++) {
                         bufferField[_y][x] = bufferField[_y - 1][x];

@@ -11,7 +11,7 @@ public class Mino {
     private int minoType;
     private int minoAngle;
     private int minoAngleSize = 4;
-    private Color color; // ミノの色
+    private Color color;
 
     private int[][][] mino_I = {
         { { 1, 0, 0, 0 }, { 1, 0, 0, 0 }, { 1, 0, 0, 0 }, { 1, 0, 0, 0 } }, // 0 degrees
@@ -65,44 +65,44 @@ public class Mino {
     public Mino() {
         this.rand = new Random();
         this.y = 0;
-        this.x = 3; // ?保起始位置不在?界上
+        this.x = 3;
         setMinoType();
         setMinoAngle();
         randSet();
-        setColor(); // ミノの色を設定
+        setColor();
     }
 
     public void initMino() {
         this.y = 0;
-        this.x = 3; // ?保起始位置不在?界上
+        this.x = 3;
         setMinoType();
         setMinoAngle();
         randSet();
-        setColor(); // ミノの色を設定
+        setColor();
     }
 
     private void setColor() {
         switch (getMinoType()) {
             case 1:
-                this.color = new Color(166, 196, 228); // Iミノは青色
+                this.color = new Color(166, 196, 228);
                 break;
             case 2:
-                this.color = new Color(250, 217, 120); // Oミノは黄色
+                this.color = new Color(250, 217, 120);
                 break;
             case 3:
-                this.color = new Color(157, 194, 132); // Sミノは?色
+                this.color = new Color(157, 194, 132);
                 break;
             case 4:
-                this.color = new Color(210, 109, 106); // Zミノは?色
+                this.color = new Color(210, 109, 106);
                 break;
             case 5:
-                this.color = new Color(0, 0, 139); // Jミノは深?色
+                this.color = new Color(0, 0, 139);
                 break;
             case 6:
-                this.color = new Color(247, 180, 118); // Lミノは橙色
+                this.color = new Color(247, 180, 118);
                 break;
             case 7:
-                this.color = new Color(138, 126, 190); // Tミノは紫色
+                this.color = new Color(138, 126, 190);
                 break;
         }
     }
