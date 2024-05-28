@@ -1,9 +1,9 @@
-# teamB_TETRIS
-
-git branch checkout -b "自分の名前　実装機能名"
-ファイルの編集
-git add "編集したファイル名"
-git commit -m "名前　変更点"
-git checkout main
-git merge 自分の名前　実装機能名
-git push
+# teamB
+# 編集手順
+git branch checkout -b "自分の名前　実装機能名" <br>
+ファイルの編集<br>
+git add "編集したファイル名"<br>
+git commit -m "名前　変更点"<br>
+git checkout main<br>
+git merge 自分の名前　実装機能名<br>
+git push<br>
