@@ -187,17 +187,9 @@ public class App extends JFrame {
         }
 
         drawNextMino(g2d, nextMino);
-<<<<<<< HEAD
         drawClearLineMessage(g2d, ga.getLastClearedLines());
 
         
-=======
-
-        // ライン消去のメッセージを描画
-        drawClearLineMessage(g2d, ga.getLastClearedLines());
-
-        // �V�����R�[�h�F?���O3���I�r�s��
->>>>>>> 9e6d94d5037938fb8136d99131f1acea77199564
         drawTop3Leaderboard(g2d);
 
         g2d.setColor(Color.BLACK);
@@ -242,7 +234,7 @@ public class App extends JFrame {
                 break;
             case 3:
                 message = "Perfect";
-                color = new Color(255, 215, 0); // ���F
+                color = new Color(255, 215, 0); // ���F
                 break;
             default:
                 return;
@@ -259,10 +251,7 @@ public class App extends JFrame {
         g2d.setFont(originalFont);
     }
 
-<<<<<<< HEAD
  
-=======
->>>>>>> 9e6d94d5037938fb8136d99131f1acea77199564
     private void drawTop3Leaderboard(Graphics2D g2d) {
         int offsetX = 400;
         int offsetY = 300;

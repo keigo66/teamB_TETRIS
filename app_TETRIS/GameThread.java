@@ -43,14 +43,9 @@ public class GameThread extends Thread {
             if (ga.isCollison(mino)) {
                 if (mino.getMinoY() <= 1) {
                     System.out.println("GameOver");
-<<<<<<< HEAD
                     System.out.println("Your score: " + ga.getScore());
                     System.out.println("Name: "+app.getPlayerName());
-                    app.gameOver(); // ƒQ[ƒ€ƒI[ƒo[Žž‚ÉƒŠ[ƒ_[ƒ{[ƒh‚ð•\Ž¦
-=======
-                    System.out.println(ga.getName() + "  Your score: " + ga.getScore());
-                    app.gameOver();
->>>>>>> 9e6d94d5037938fb8136d99131f1acea77199564
+                    app.gameOver(); // ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½Éƒï¿½ï¿½[ï¿½_ï¿½[ï¿½{ï¿½[ï¿½hï¿½ï¿½\ï¿½ï¿½
                     System.exit(0);
                 }
 
