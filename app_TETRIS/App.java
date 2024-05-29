@@ -180,14 +180,11 @@ public class App extends JFrame {
         }
 
         drawNextMino(g2d, nextMino);
-<<<<<<< HEAD
-=======
 
         // ãƒ©ã‚¤ãƒ³æ¶ˆå»ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æç”»
->>>>>>> b59201d154b2b84a0b461dc5f8967c7e027a2f8e
         drawClearLineMessage(g2d, ga.getLastClearedLines());
 
-        // V‚µ‚¢ƒR[ƒhF?§‘O3–¼“I”rsÔ
+        // ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½F?ï¿½ï¿½ï¿½O3ï¿½ï¿½ï¿½Iï¿½rï¿½sï¿½ï¿½
         drawTop3Leaderboard(g2d);
 
         g2d.setColor(Color.BLACK);
@@ -239,7 +236,6 @@ public class App extends JFrame {
             g2d.drawString(message, getWidth() / 2 - 50, getHeight() / 2);
     }
 
-    // V‚µ‚¢ƒƒ\ƒbƒhFƒgƒbƒv3ƒŠ[ƒ_[ƒ{[ƒh‚ğ•`‰æ‚·‚éƒƒ\ƒbƒh
     private void drawTop3Leaderboard(Graphics2D g2d) {
         int offsetX = 400;
         int offsetY = 300;
