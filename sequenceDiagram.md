@@ -1,48 +1,54 @@
 ```mermaid
 
 sequenceDiagram
+    participant User
     participant App
     participant GameThread
     participant GameArea
-    participant Mino
-    
-    participant System
-     App->>GameThread : GameThread.start()
-    loop every second
-        GameThread ->> GameArea: isCollison(mino, mino.getMinoX(), mino.getMinoY() + 1, mino.getMinoAngle())
-        note right of GameArea: Check if there is a collision
-        
-        alt checkCollision 
-            rect rgba(157 , 252, 254, 0.2)
-            GameArea -->> GameThread: false (no collision)
-            GameThread ->> GameArea: moveDown(mino)
-            
-            GameArea -->> GameThread: true (collision)
-            GameThread ->> GameArea: isCollison(mino)
-            
-            note right of GameArea: Check if collision at top
-            GameArea -->> GameThread: true (at top)
-            GameThread ->> System: exit(0) (GameOver)
-            
-            GameArea -->> GameThread: false (not at top)
-            GameThread ->> GameArea: bufferFieldAddMino(mino) ：ミノの位置をバッファフィールドに追加
-            GameThread ->> GameArea: eraseLine()：BufferField上で、行を消すか判定
-            GameThread ->> GameArea: initField()：BufferFieldをFieldにコピー
-            
-            note right of GameThread: Create new Mino
-            GameThread ->> GameThread: mino = nextMino
-            GameThread ->> GameThread: nextMino = new Mino()
-            GameThread ->> App: updateMino(mino)
+    participant Leaderboard
 
-            GameThread ->> GameArea: initField()
-            GameThread ->> GameArea: fieldAddMino(mino)
+    %% ゲーム開始
+    User->>App: main() メソッドを呼び出す
+    App->>App: new App(playerName)
+    App->>GameThread: start()
+
+    %% ミノの操作
+    User->>App: キー入力
+    App->>App: repaint()
+
+
+    %% 一時停止
+    User->>App: キー入力 (P)
+    App->>App: togglePause()
+
+    %% ゲームスレッドの処理
+    loop ゲームループ
+        alt ゲームが一時停止中
+            GameThread->>GameThread: Thread.sleep(100)
+        else ゲームが進行中
+            GameThread->>GameArea: isCollison(mino, mino.getMinoX(), mino.getMinoY() + 1, mino.getMinoAngle())
+            alt 衝突なし
+                GameThread->>GameArea: moveDown(mino)
+            else 衝突あり
+                GameThread->>GameArea: isCollison(mino)
+                alt ゲームオーバー
+                    GameThread->>App: gameOver()
+                    App->>Leaderboard: add score
+                    App->>Leaderboard: save to file
+                    App->>App: displayLeaderboard()
+                    App->>System: System.exit(0)
+                else ミノの固定
+                    GameThread->>GameArea: bufferFieldAddMino(mino)
+                    GameThread->>GameArea: eraseLine()
+                    GameThread->>GameArea: initField()
+                    GameThread->>App: updateMino(nextMino)
+                    App->>App: updateNextMino(new Mino())
+                end
             end
-        else
-        rect rgba(167 ,153, 245,0.2)
-        GameThread ->> App: repaint()
-        GameThread ->> GameArea: drawNextMino(nextMino)
         end
-        end
-        GameThread ->> GameThread: sleep(1000)
+        GameThread->>App: repaint()
+        GameThread->>GameArea: drawNextMino(nextMino)
+        GameThread->>GameThread: increaseDifficulty()
+        GameThread->>GameThread: Thread.sleep(sleepTime)
     end
 ```
