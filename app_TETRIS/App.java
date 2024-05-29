@@ -48,7 +48,7 @@ public class App extends JFrame {
         String name = sc.next();
 
         int l = name.length();
-        if (0 < l && l <= 16) {
+        if (0 < l && l <= 16 && name.matches("[a-zA-Z0-9]+") == true) {
             System.out.println("Welcome " + name + "!");
         } else {
             name = "Guest";
@@ -193,8 +193,8 @@ public class App extends JFrame {
     }
 
     private void drawNextMino(Graphics2D g2d, Mino nextMino) {
-        int offsetX = 390;
-        int offsetY = 150;
+        int offsetX = 380;
+        int offsetY = 400;
 
         g2d.setColor(Color.BLACK);
         g2d.drawString("Next Mino:", offsetX, offsetY - 20);
