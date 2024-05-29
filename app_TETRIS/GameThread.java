@@ -13,7 +13,7 @@ public class GameThread extends Thread {
 
     public GameThread(Mino mino, GameArea ga, Mino nextMino, App app) {
         this.mino = mino;
-         this.ga = ga;
+        this.ga = ga;
         this.nextMino = nextMino;
         this.app = app;
     }
@@ -27,7 +27,7 @@ public class GameThread extends Thread {
 
     public void run() {
         while (true) {
-            if (app.isPaused()) {//when keyiput is P , Pause.
+            if (app.isPaused()) {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
@@ -35,29 +35,28 @@ public class GameThread extends Thread {
                 }
                 continue;
             }
-            //if no collision
+
             if (!ga.isCollison(mino, mino.getMinoX(), mino.getMinoY() + 1, mino.getMinoAngle())) {
                 ga.moveDown(mino);
             }
 
-            //if collision exist
             if (ga.isCollison(mino)) {
                 if (mino.getMinoY() <= 1) {
                     System.out.println("GameOver");
                     System.out.println(ga.getName() + "  Your score: " + ga.getScore());
+                    app.gameOver(); // ゲームオーバー時にリーダーボードを表示
                     System.exit(0);
                 }
 
-                ga.bufferFieldAddMino(mino);//Add mino to buffer Field
-                ga.eraseLine(); //erase line on the bufferfiled,add score
-                ga.initField();//field initialization(copy filed to bufferfield
-                // generate new mino
+                ga.bufferFieldAddMino(mino);
+                ga.eraseLine();
+                ga.initField();
                 this.mino = nextMino;
                 this.nextMino = new Mino();
                 app.updateMino(this.mino);
                 app.updateNextMino(this.nextMino);
             } else {
-                ga.initField();//field initialization(copy filed to bufferfield
+                ga.initField();
                 ga.fieldAddMino(mino);
             }
             app.repaint();

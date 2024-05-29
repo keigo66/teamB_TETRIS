@@ -3,29 +3,26 @@ package app_TETRIS;
 import java.awt.Color;
 
 public class GameArea {
-    //filed
     private int fieldHight = 21;
     private int fieldWidth = 12;
-    private int[][] field;
-    private Color[][] fieldColors;
-    //buffer field 
     private int grandHight = 30;
     private int grandWidth = 20;
+    private int[][] field;
+    private Color[][] fieldColors;
     private int[][] bufferField;
     private Color[][] bufferFieldColors;
     private int score = 0;
     private int linecount = 0;
     private String name;
-    private int lastClearedLines = 0; // the number of line which cleared last time
+    private int lastClearedLines = 0; 
 
-    //constructer
     public GameArea() {
         this.field = new int[grandHight][grandWidth];
         this.fieldColors = new Color[grandHight][grandWidth];
         this.bufferField = new int[grandHight][grandWidth];
         this.bufferFieldColors = new Color[grandHight][grandWidth];
         initBufferField();
-        initField();// field initialization
+        initField();
     }
 
     public int getScore() {
@@ -84,7 +81,7 @@ public class GameArea {
     public void setName(String name) {
         this.name = name;
     }
-    // field initialization(copy filed to bufferfield)
+
     public void initField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
@@ -93,7 +90,7 @@ public class GameArea {
             }
         }
     }
-    // bufferfield initialization
+
     public void initBufferField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
@@ -103,17 +100,16 @@ public class GameArea {
         }
         for (int y = 0; y < getFieldHight(); y++) {
             bufferField[y][0] = bufferField[y][getFieldWidth() - 1] = 1;
-        }//set horizontal edge to 1
+        }
         for (int x = 0; x < getFieldWidth(); x++) {
             bufferField[getFieldHight() - 1][x] = 1;
-        }//set floor edge to 1 
+        }
     }
 
-    //CLI output (field)
     public void drawField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
-                System.out.printf("%s", (field[y][x] == 1 ? "o" : "x"));
+                System.out.printf("%s", (field[y][x] == 1 ? "¡" : " "));
             }
             System.out.println();
         }
@@ -122,17 +118,16 @@ public class GameArea {
         System.out.println("Score: " + score);
     }
 
-    //CLI output (nextMino)
     public void drawNextMino(Mino nextMino) {
         int[][][] m = nextMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
-                System.out.printf("%s", (m[0][y][x] == 1 ? "o" : "x"));
+                System.out.printf("%s", (m[0][y][x] == 1 ? "¡" : " "));
             }
             System.out.println();
         }
     }
-    //not used
+
     public void drawFieldAndMino(Mino mino, Mino nextMino) {
         if (isCollison(mino)) {
             bufferFieldAddMino(mino);
@@ -146,18 +141,17 @@ public class GameArea {
         System.out.println();
     }
 
-    // add mino to filed
     public void fieldAddMino(Mino mino) {
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
-                if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {// set the mino by checking 0,1
+                if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
                     this.field[mino.getMinoY() + y][mino.getMinoX() + x] = 1;
                     this.fieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor();
                 }
             }
         }
     }
-    //add mino to buffer filed
+
     public void bufferFieldAddMino(Mino mino) {
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
@@ -168,7 +162,7 @@ public class GameArea {
             }
         }
     }
-    //Check for collisions at the current position of the mino or
+
     public boolean isCollison(Mino mino) {
         for (int r = 0; r < mino.getMinoSize(); r++) {
             for (int c = 0; c < mino.getMinoSize(); c++) {
@@ -186,17 +180,15 @@ public class GameArea {
         }
         return false;
     }
-    //check for collisions att a specified position 
+
     public boolean isCollison(Mino mino, int _x, int _y, int _angle) {
         for (int r = 0; r < mino.getMinoSize(); r++) {
             for (int c = 0; c < mino.getMinoSize(); c++) {
                 if (mino.getMino()[_angle][r][c] == 1) {
                     int checkX = _x + c;
                     int checkY = _y + r;
-                    //check the collision between given mino and outerline or other mino
                     if (checkX < 0 || checkX >= getFieldWidth() || checkY < 0 || checkY >= getFieldHight()) {
                         return true;
-                        
                     }
                     if (checkX < 0 || checkX >= getFieldWidth() || checkY < 0 || checkY >= getFieldHight()) {
                         continue;
@@ -210,7 +202,6 @@ public class GameArea {
         return false;
     }
 
-    //erase line on the bufferfiled,add score
     public void eraseLine() {
         boolean isFill;
         int linesCleared = 0;
@@ -223,20 +214,19 @@ public class GameArea {
                     break;
                 }
             }
-            if (isFill) {//when the line is full filed
-                linesCleared++; 
-                
+            if (isFill) {
+                linesCleared++;
                 for (int _y = y; _y > 0; _y--) {
                     for (int x = 1; x < getFieldWidth() - 1; x++) {
-                        bufferField[_y][x] = bufferField[_y - 1][x];//move 1 line up
-                        bufferFieldColors[_y][x] = bufferFieldColors[_y - 1][x];//color set
+                        bufferField[_y][x] = bufferField[_y - 1][x];
+                        bufferFieldColors[_y][x] = bufferFieldColors[_y - 1][x];
                     }
                 }
                 y++;
             }
         }
 
-        lastClearedLines = linesCleared; // the number of cleared line
+        lastClearedLines = linesCleared;
         addScore(linesCleared);
     }
 

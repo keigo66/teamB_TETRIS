@@ -11,6 +11,10 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.BasicStroke;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.io.*;
 
 public class App extends JFrame {
     private GameArea ga;
@@ -18,17 +22,20 @@ public class App extends JFrame {
     private Mino nextMino;
     private String playerName;
     private boolean isPaused = false;
+    private ArrayList<LeaderboardEntry> leaderboard;
+    private static final String LEADERBOARD_FILE = "leaderboard.dat";
 
     public App(String playerName) {
         this.mino = new Mino();
         this.ga = new GameArea();
         this.nextMino = new Mino();
-        this.playerName = playerName; 
-        new GameThread(mino, ga, nextMino, this).start();//gameThread start
-        initControls(); 
+        this.playerName = playerName;
+        this.leaderboard = loadLeaderboard();
+        new GameThread(mino, ga, nextMino, this).start();
+        initControls();
 
         setTitle("Tetris");
-        setSize(500, 640); //screen size setting
+        setSize(500, 640);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -54,7 +61,7 @@ public class App extends JFrame {
         String finalName = name;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new App(finalName).setVisible(true);//app instanate,visible 
+                new App(finalName).setVisible(true);
             }
         });
         sc.close();
@@ -77,7 +84,6 @@ public class App extends JFrame {
         isPaused = !isPaused;
     }
 
-    // input initialazation
     private void initControls() {
         InputMap im = this.getRootPane().getInputMap();
         ActionMap am = this.getRootPane().getActionMap();
@@ -135,29 +141,23 @@ public class App extends JFrame {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        //background set White
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-       //scoreborad display
         g2d.setColor(Color.BLACK);
         g2d.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 30, 50);
-
-       //playername disaplay
         g2d.drawString("Player: " + playerName, (ga.getFieldWidth() + 1) * 30, 70);
 
-        //Game filed drawing
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
-                if (ga.getField()[y][x] == 1) {///if block on the fieled
-                    g2d.setColor(ga.getFieldColors()[y][x]); 
-                    g2d.fillRect(x * 30, y * 30, 30, 30);//fill mino
-                    
-                    g2d.setColor(Color.DARK_GRAY); 
-                    g2d.setStroke(new BasicStroke(3)); 
-                    g2d.drawRect(x * 30, y * 30, 30, 30);//fill blank block border
-                } else {//blank block
-                    g2d.setColor(Color.BLACK); 
+                if (ga.getField()[y][x] == 1) {
+                    g2d.setColor(ga.getFieldColors()[y][x]);
+                    g2d.fillRect(x * 30, y * 30, 30, 30);
+                    g2d.setColor(Color.DARK_GRAY);
+                    g2d.setStroke(new BasicStroke(3));
+                    g2d.drawRect(x * 30, y * 30, 30, 30);
+                } else {
+                    g2d.setColor(Color.BLACK);
                     g2d.fillRect(x * 30, y * 30, 30, 30);
                     g2d.setColor(Color.DARK_GRAY);
                     g2d.setStroke(new BasicStroke(1));
@@ -166,7 +166,6 @@ public class App extends JFrame {
             }
         }
 
-        //mino drawing
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
@@ -179,17 +178,16 @@ public class App extends JFrame {
             }
         }
 
-       //draw next mino
         drawNextMino(g2d, nextMino);
+
+        // ライン消去のメッセージを描画
         drawClearLineMessage(g2d, ga.getLastClearedLines());
 
-        //Logo display
         g2d.setColor(Color.BLACK);
         g2d.setFont(g2d.getFont().deriveFont(java.awt.Font.BOLD));
         g2d.drawString("TCS_B group", getWidth() - 100, getHeight() - 30);
     }
 
-    //
     private void drawNextMino(Graphics2D g2d, Mino nextMino) {
         int offsetX = 390;
         int offsetY = 150;
@@ -224,14 +222,61 @@ public class App extends JFrame {
                 break;
             case 3:
                 message = "Perfect";
-                color = new Color(255, 215, 0); 
+                color = new Color(255, 215, 0); // ゴールド
                 break;
             default:
                 return;
         }
         g2d.setColor(color);
-            g2d.setColor(color);
         g2d.setFont(g2d.getFont().deriveFont(30f));
-        g2d.drawString(message, getWidth() / 2 - 50, getHeight() / 2);
+                g2d.drawString(message, getWidth() / 2 - 50, getHeight() / 2);
+    }
+
+    // ゲーム終了時の処理
+    public void gameOver() {
+        // リーダーボードにスコアを追加
+        leaderboard.add(new LeaderboardEntry(playerName, ga.getScore()));
+        // スコアの降順にソート
+        Collections.sort(leaderboard, new Comparator<LeaderboardEntry>() {
+            public int compare(LeaderboardEntry e1, LeaderboardEntry e2) {
+                return Integer.compare(e2.getScore(), e1.getScore());
+            }
+        });
+
+        // リーダーボードをファイルに保存
+        saveLeaderboard();
+
+        // リーダーボードの表示
+        displayLeaderboard();
+    }
+
+    // リーダーボードの表示
+    private void displayLeaderboard() {
+        System.out.println("Leaderboard:");
+        for (int i = 0; i < Math.min(leaderboard.size(), 10); i++) {
+            LeaderboardEntry entry = leaderboard.get(i);
+            System.out.printf("%d. %s - %d%n", i + 1, entry.getPlayerName(), entry.getScore());
+        }
+    }
+
+    // リーダーボードをファイルに保存
+    private void saveLeaderboard() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(LEADERBOARD_FILE))) {
+            oos.writeObject(leaderboard);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // リーダーボードをファイルから読み込み
+    @SuppressWarnings("unchecked")
+    private ArrayList<LeaderboardEntry> loadLeaderboard() {
+        ArrayList<LeaderboardEntry> leaderboard = new ArrayList<>();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(LEADERBOARD_FILE))) {
+            leaderboard = (ArrayList<LeaderboardEntry>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            // ファイルが存在しない場合、または読み込めない場合は空のリストを返す
+        }
+        return leaderboard;
     }
 }
