@@ -201,8 +201,8 @@ public class App extends JFrame {
     }
 
     private void drawNextMino(Graphics2D g2d, Mino nextMino) {
-        int offsetX = 380;
-        int offsetY = 400;
+        int offsetX = 390;
+        int offsetY = 150;
 
         g2d.setColor(Color.BLACK);
         g2d.drawString("Next Mino:", offsetX, offsetY - 10);
