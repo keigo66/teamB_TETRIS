@@ -109,7 +109,7 @@ public class GameArea {
     public void drawField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
-                System.out.printf("%s", (field[y][x] == 1 ? "?申?申" : "?申?申"));
+                System.out.printf("%s", (field[y][x] == 1 ? "o" : "x"));
             }
             System.out.println();
         }
