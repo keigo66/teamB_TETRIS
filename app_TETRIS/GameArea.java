@@ -16,7 +16,7 @@ public class GameArea {
     private int score = 0;
     private int linecount = 0;
     private String name;
-    private int lastClearedLines = 0; // 上次消除的行数
+    private int lastClearedLines = 0; // the number of line which cleared last time
 
     //constructer
     public GameArea() {
@@ -113,7 +113,7 @@ public class GameArea {
     public void drawField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
-                System.out.printf("%s", (field[y][x] == 1 ? "笆?" : "笆｡"));
+                System.out.printf("%s", (field[y][x] == 1 ? "o" : "x"));
             }
             System.out.println();
         }
@@ -127,7 +127,7 @@ public class GameArea {
         int[][][] m = nextMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
-                System.out.printf("%s", (m[0][y][x] == 1 ? "笆?" : "笆｡"));
+                System.out.printf("%s", (m[0][y][x] == 1 ? "o" : "x"));
             }
             System.out.println();
         }
@@ -172,7 +172,6 @@ public class GameArea {
     public boolean isCollison(Mino mino) {
         for (int r = 0; r < mino.getMinoSize(); r++) {
             for (int c = 0; c < mino.getMinoSize(); c++) {
-<<<<<<< HEAD
                 if (mino.getMino()[mino.getMinoAngle()][r][c] == 1) {
                     int newY = mino.getMinoY() + r + 1;
                     int newX = mino.getMinoX() + c;
@@ -182,12 +181,6 @@ public class GameArea {
                     if (this.bufferField[newY][newX] == 1) {
                         return true;
                     }
-=======
-                if (this.bufferField[mino.getMinoY() + r + 1][mino.getMinoX() + c] == 1
-                        && mino.getMino()[mino.getMinoAngle()][r][c] == 1) {
-                        //If there is a block at a specific position in the BufferField, and also a block at a position of a given mino
-                        return true;
->>>>>>> 4f103656f6ba85ab19fe49e0596a1b9b5af89af5
                 }
             }
         }
@@ -200,10 +193,7 @@ public class GameArea {
                 if (mino.getMino()[_angle][r][c] == 1) {
                     int checkX = _x + c;
                     int checkY = _y + r;
-<<<<<<< HEAD
-=======
                     //check the collision between given mino and outerline or other mino
->>>>>>> 4f103656f6ba85ab19fe49e0596a1b9b5af89af5
                     if (checkX < 0 || checkX >= getFieldWidth() || checkY < 0 || checkY >= getFieldHight()) {
                         return true;
                         
@@ -233,14 +223,9 @@ public class GameArea {
                     break;
                 }
             }
-<<<<<<< HEAD
-            if (isFill) {
-                linesCleared++;
-=======
             if (isFill) {//when the line is full filed
                 linesCleared++; 
                 
->>>>>>> 4f103656f6ba85ab19fe49e0596a1b9b5af89af5
                 for (int _y = y; _y > 0; _y--) {
                     for (int x = 1; x < getFieldWidth() - 1; x++) {
                         bufferField[_y][x] = bufferField[_y - 1][x];//move 1 line up
@@ -251,7 +236,7 @@ public class GameArea {
             }
         }
 
-        lastClearedLines = linesCleared; // ???次消除的行数
+        lastClearedLines = linesCleared; // the number of cleared line
         addScore(linesCleared);
     }
 
