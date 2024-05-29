@@ -109,7 +109,7 @@ public class GameArea {
     public void drawField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
-                System.out.printf("%s", (field[y][x] == 1 ? "¡" : " "));
+                System.out.printf("%s", (field[y][x] == 1 ? "ï¿½ï¿½" : "ï¿½ï¿½"));
             }
             System.out.println();
         }
@@ -122,7 +122,7 @@ public class GameArea {
         int[][][] m = nextMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
-                System.out.printf("%s", (m[0][y][x] == 1 ? "¡" : " "));
+                System.out.printf("%s", (m[0][y][x] == 1 ? "o" : "x"));
             }
             System.out.println();
         }
@@ -226,6 +226,7 @@ public class GameArea {
             }
         }
 
+        linecount += linesCleared;
         lastClearedLines = linesCleared;
         addScore(linesCleared);
     }

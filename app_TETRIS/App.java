@@ -146,7 +146,8 @@ public class App extends JFrame {
 
         g2d.setColor(Color.BLACK);
         g2d.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 30, 50);
-        g2d.drawString("Player: " + playerName, (ga.getFieldWidth() + 1) * 30, 70);
+        g2d.drawString("Line: " + ga.getCount(), (ga.getFieldWidth() + 1) * 30, 70);
+        g2d.drawString("Player: " + playerName, (ga.getFieldWidth() + 1) * 30, 90);
 
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
@@ -179,6 +180,11 @@ public class App extends JFrame {
         }
 
         drawNextMino(g2d, nextMino);
+<<<<<<< HEAD
+=======
+
+        // ãƒ©ã‚¤ãƒ³æ¶ˆå»ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æç”»
+>>>>>>> b59201d154b2b84a0b461dc5f8967c7e027a2f8e
         drawClearLineMessage(g2d, ga.getLastClearedLines());
 
         // V‚µ‚¢ƒR[ƒhF?§‘O3–¼“I”rsÔ
@@ -223,7 +229,7 @@ public class App extends JFrame {
                 break;
             case 3:
                 message = "Perfect";
-                color = new Color(255, 215, 0); // ƒS[ƒ‹ƒh
+                color = new Color(255, 215, 0); // ã‚´ãƒ¼ãƒ«ãƒ‰
                 break;
             default:
                 return;
@@ -249,25 +255,25 @@ public class App extends JFrame {
         }
     }
 
-    // ƒQ[ƒ€I—¹‚Ìˆ—
+    // ã‚²ãƒ¼ãƒ çµ‚äº†æ™‚ã®å‡¦ç†
     public void gameOver() {
-        // ƒŠ[ƒ_[ƒ{[ƒh‚ÉƒXƒRƒA‚ğ’Ç‰Á
+        // ãƒªãƒ¼ãƒ€ãƒ¼ãƒœãƒ¼ãƒ‰ã«ã‚¹ã‚³ã‚¢ã‚’è¿½åŠ 
         leaderboard.add(new LeaderboardEntry(playerName, ga.getScore()));
-        // ƒXƒRƒA‚Ì~‡‚Éƒ\[ƒg
+        // ã‚¹ã‚³ã‚¢ã®é™é †ã«ã‚½ãƒ¼ãƒˆ
         Collections.sort(leaderboard, new Comparator<LeaderboardEntry>() {
             public int compare(LeaderboardEntry e1, LeaderboardEntry e2) {
                 return Integer.compare(e2.getScore(), e1.getScore());
             }
         });
 
-        // ƒŠ[ƒ_[ƒ{[ƒh‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶
+        // ãƒªãƒ¼ãƒ€ãƒ¼ãƒœãƒ¼ãƒ‰ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
         saveLeaderboard();
 
-        // ƒŠ[ƒ_[ƒ{[ƒh‚Ì•\¦
+        // ãƒªãƒ¼ãƒ€ãƒ¼ãƒœãƒ¼ãƒ‰ã®è¡¨ç¤º
         displayLeaderboard();
     }
 
-    // ƒŠ[ƒ_[ƒ{[ƒh‚Ì•\¦
+    // ãƒªãƒ¼ãƒ€ãƒ¼ãƒœãƒ¼ãƒ‰ã®è¡¨ç¤º
     private void displayLeaderboard() {
         System.out.println("Leaderboard:");
         for (int i = 0; i < Math.min(leaderboard.size(), 10); i++) {
@@ -276,7 +282,7 @@ public class App extends JFrame {
         }
     }
 
-    // ƒŠ[ƒ_[ƒ{[ƒh‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶
+    // ãƒªãƒ¼ãƒ€ãƒ¼ãƒœãƒ¼ãƒ‰ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
     private void saveLeaderboard() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(LEADERBOARD_FILE))) {
             oos.writeObject(leaderboard);
@@ -285,14 +291,14 @@ public class App extends JFrame {
         }
     }
 
-    // ƒŠ[ƒ_[ƒ{[ƒh‚ğƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚İ
+    // ãƒªãƒ¼ãƒ€ãƒ¼ãƒœãƒ¼ãƒ‰ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã¿
     @SuppressWarnings("unchecked")
     private ArrayList<LeaderboardEntry> loadLeaderboard() {
         ArrayList<LeaderboardEntry> leaderboard = new ArrayList<>();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(LEADERBOARD_FILE))) {
             leaderboard = (ArrayList<LeaderboardEntry>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            // ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡A‚Ü‚½‚Í“Ç‚İ‚ß‚È‚¢ê‡‚Í‹ó‚ÌƒŠƒXƒg‚ğ•Ô‚·
+            // ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆã€ã¾ãŸã¯èª­ã¿è¾¼ã‚ãªã„å ´åˆã¯ç©ºã®ãƒªã‚¹ãƒˆã‚’è¿”ã™
         }
         return leaderboard;
     }
