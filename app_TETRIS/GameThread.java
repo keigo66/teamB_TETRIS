@@ -44,7 +44,7 @@ public class GameThread extends Thread {
                 if (mino.getMinoY() <= 1) {
                     System.out.println("GameOver");
                     System.out.println(ga.getName() + "  Your score: " + ga.getScore());
-                    app.gameOver(); // ゲームオーバー時にリーダーボードを表示
+                    app.gameOver();
                     System.exit(0);
                 }
 
