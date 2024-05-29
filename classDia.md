@@ -1,84 +1,82 @@
 ```mermaid
 classDiagram
-    class App {
-        -GameArea ga
-        -Mino mino
-        -Mino nextMino
-        -String playerName
-        -boolean isPaused
-        +App(String playerName)
-        +static void main(String[] args)
-        +void updateMino(Mino mino)
-        +void updateNextMino(Mino nextMino)
-        +boolean isPaused()
-        +void togglePause()
-        -void initControls()
-        +void paint(Graphics g)
-        -void drawNextMino(Graphics2D g2d, Mino nextMino)
+    class Appクラス {
+        - GameArea gameArea
+        - Mino mino
+        - Mino nextMino
+        - String Player name
+        - boolean isPaused
+        + main()
+        + updateNextMino(m: NextMino)
+        + updateMino(m: Mino)
+        + isPaused()
+        + togglePaused()
+        + paint(Graphics G)
+        + initControl()
+        + drawNextMino(Graphics2D:g2d,m:nextMino)
+        + drawClearLineMessage(Graphics2D:g2d,int:linesCleared)
     }
 
-    class GameArea {
-        -int[][] field
-        -Color[][] fieldColors
-        -int score
-        +GameArea()
-        +int getFieldWidth()
-        +int getFieldHight()
-        +int[][] getField()
-        +Color[][] getFieldColors()
-        +int getScore()
-        +boolean isCollison(Mino mino, int x, int y, int angle)
-        +void moveRight(Mino mino)
-        +void moveLeft(Mino mino)
-        +void moveDown(Mino mino)
-        +void rotation(Mino mino)
+    class GameAreaクラス {
+        - int[][] field
+        - Color [][] filedColor
+        - int[][] bufferField
+        - Color[][] bufferFieldColors
+        - int score
+        - int linecount
+        - String name
+        - int lastClearedLines
+        + initField()
+        + initBufferField()
+        + filedAddMino(m:Mino)
+        + bufferFiledAddMino(m:Mino)
+        + isCollision(m: Mino) : boolean
+        + isCollision(m: Mino, x: int, y: int, angle: int) : boolean
+        + moveDown(m: Mino)
+        + bufferFieldAddMino(m: Mino)
+        + eraseLine()
+        + addScore(int:linesCleard)
+        + drawFieldAndMino(m: Mino,m:nextMino)
     }
 
-    class Mino {
-        -Random rand
-        -int minoSize
-        -int[][][] minoTypes
-        -int x
-        -int y
-        -int minoType
-        -int minoAngle
-        -int minoAngleSize
-        -Color color
-        +Mino()
-        +void initMino()
-        +Color getColor()
-        +int[][][] getMino()
-        +int getMinoSize()
-        +int getMinoAngleSize()
-        +int getMinoX()
-        +int getMinoY()
-        +void setMinoX(int x)
-        +void setMinoY(int y)
-        +void addMinoX()
-        +void addMinoY()
-        +void decMinoX()
-        +int getMinoAngle()
-        +int getMinoType()
-        -void setMinoType()
-        -void setMinoAngle()
-        -void setMinoAngle(int minoAngle)
-        -void randSet()
+    class GameThreadクラス {
+        - Mino mino
+        - Mino nextMino
+        - GameArea ga
+        - App app
+        - difficultyLevel =1
+        - sleepTime = 1000
+        + run()
+        + GameThread(Mino mino, GameArea ga, Mino nextMino, App app)
+        + GameThread(Mino mino, GameArea ga, App app)
+        + increaseDifficulty()
+
     }
 
-    class GameThread {
-        -Mino mino
-        -GameArea ga
-        -Mino nextMino
-        -App app
-        +GameThread(Mino mino, GameArea ga, Mino nextMino, App app)
-        +void run()
+    class Minoクラス {
+        - int x,y
+        - int minoSize = 4
+        - int minoType
+        - int minoAngle
+        - int minoAngleSize = 4
+        - int[][][] minoTypes
+        - Color color
+        + initMino()
+        + setColor()
+        + getColor() : Color
+        + setMinoType()
+        + setMinoAngle()
+        + setMinoAngle(int minoAngle)
+        + getMinoX() : int
+        + getMinoY() : int
+        + addMinoX()
+        + addMinoY()
+        + decMinoX()
     }
 
-    App --> GameArea
-    App --> Mino
-    App --> GameThread
-    GameThread --> Mino
-    GameThread --> GameArea
-    GameThread --> App
-    GameArea --> Mino
+    Appクラス  --> GameThreadクラス
+    Appクラス  --> GameAreaクラス
+    GameThreadクラス --> GameAreaクラス
+    GameThreadクラス  -->  Minoクラス
+    Minoクラス  -->  GameAreaクラス
 ```
