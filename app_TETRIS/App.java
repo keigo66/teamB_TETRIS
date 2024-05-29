@@ -189,6 +189,7 @@ public class App extends JFrame {
         g2d.drawString("TCS_B group", getWidth() - 100, getHeight() - 30);
     }
 
+    //
     private void drawNextMino(Graphics2D g2d, Mino nextMino) {
         int offsetX = 390; 
         int offsetY = 150; 
