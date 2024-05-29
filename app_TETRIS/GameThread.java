@@ -43,7 +43,7 @@ public class GameThread extends Thread {
             if (ga.isCollison(mino)) {
                 if (mino.getMinoY() <= 1) {
                     System.out.println("GameOver");
-                    System.out.println(ga.getName() + "  Your score: " + ga.getScore());
+                    System.out.println("Your score: " + ga.getScore());
                     app.gameOver(); // ゲームオーバー時にリーダーボードを表示
                     System.exit(0);
                 }

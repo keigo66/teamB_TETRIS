@@ -35,7 +35,7 @@ public class App extends JFrame {
         initControls();
 
         setTitle("Tetris");
-        setSize(500, 640);
+        setSize(580, 640);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -179,9 +179,10 @@ public class App extends JFrame {
         }
 
         drawNextMino(g2d, nextMino);
-
-        // ライン消去のメッセージを描画
         drawClearLineMessage(g2d, ga.getLastClearedLines());
+
+        // 新しいコード：?制前3名的排行榜
+        drawTop3Leaderboard(g2d);
 
         g2d.setColor(Color.BLACK);
         g2d.setFont(g2d.getFont().deriveFont(java.awt.Font.BOLD));
@@ -229,7 +230,23 @@ public class App extends JFrame {
         }
         g2d.setColor(color);
         g2d.setFont(g2d.getFont().deriveFont(30f));
-                g2d.drawString(message, getWidth() / 2 - 50, getHeight() / 2);
+            g2d.drawString(message, getWidth() / 2 - 50, getHeight() / 2);
+    }
+
+    // 新しいメソッド：トップ3リーダーボードを描画するメソッド
+    private void drawTop3Leaderboard(Graphics2D g2d) {
+        int offsetX = 400;
+        int offsetY = 300;
+
+        g2d.setColor(Color.BLACK);
+        g2d.drawString("Top 3:", offsetX, offsetY - 20);
+
+        int leaderboardSize = Math.min(leaderboard.size(), 3);
+        for (int i = 0; i < leaderboardSize; i++) {
+            LeaderboardEntry entry = leaderboard.get(i);
+            String entryText = String.format("%d. Player:%s       Score:%d", i + 1, entry.getPlayerName(), entry.getScore());
+            g2d.drawString(entryText, offsetX, offsetY + (i * 20));
+        }
     }
 
     // ゲーム終了時の処理
