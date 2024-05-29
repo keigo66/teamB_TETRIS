@@ -1,13 +1,16 @@
 ```mermaid
 
 sequenceDiagram
-    participant User
+    Actor User
     participant App
     participant GameThread
     participant GameArea
     participant Leaderboard
+    participant datFile
 
     %% ゲーム開始
+    datFile ->>Leaderboard :loadLeaderboard()
+    Leaderboard ->>App :this.leaderboard = loadLeaderboard()
     User->>App: main() メソッドを呼び出す
     App->>App: new App(playerName)
     App->>GameThread: start()
@@ -22,7 +25,7 @@ sequenceDiagram
     App->>App: togglePause()
 
     %% ゲームスレッドの処理
-    loop ゲームループ
+    loop ゲームループ・画面更新
         alt ゲームが一時停止中
             GameThread->>GameThread: Thread.sleep(100)
         else ゲームが進行中
@@ -31,13 +34,16 @@ sequenceDiagram
                 GameThread->>GameArea: moveDown(mino)
             else 衝突あり
                 GameThread->>GameArea: isCollison(mino)
-                alt ゲームオーバー
+                alt ゲームオーバーの場合
                     GameThread->>App: gameOver()
-                    App->>Leaderboard: add score
-                    App->>Leaderboard: save to file
-                    App->>App: displayLeaderboard()
+                    Activate datFile
+                    App->>Leaderboard: saveLeaderboard()でadd score　
+                    Leaderboard->>datFile :saveLeaderboard()　save to file
+                    
+                    datFile->>App: displayLeaderboard()
+                    deactivate datFile
                     App->>System: System.exit(0)
-                else ミノの固定
+                else ゲーム続行の場合→ミノの固定
                     GameThread->>GameArea: bufferFieldAddMino(mino)
                     GameThread->>GameArea: eraseLine()
                     GameThread->>GameArea: initField()
