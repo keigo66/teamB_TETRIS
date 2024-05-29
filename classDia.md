@@ -13,8 +13,12 @@ classDiagram
         + togglePaused()
         + paint(Graphics G)
         + initControl()
+        + gameOver()
         + drawNextMino(Graphics2D:g2d,m:nextMino)
         + drawClearLineMessage(Graphics2D:g2d,int:linesCleared)
+        + gameOver()
+        + saveLeaderboard()
+        + displayLeaderboard()
     }
 
     class GameAreaクラス {
@@ -74,6 +78,14 @@ classDiagram
         + decMinoX()
     }
 
+    class LeaderboardEntryクラス {
+        - long serialVersionUID = 1L 
+        - String playerName
+        - int score
+        + LeaderboardEntry(String playerName,int score)
+
+    }
+     Appクラス  --> GameLeaderboardEntryクラス
     Appクラス  --> GameThreadクラス
     Appクラス  --> GameAreaクラス
     GameThreadクラス --> GameAreaクラス
