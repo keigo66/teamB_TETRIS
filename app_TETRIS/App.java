@@ -48,7 +48,7 @@ public class App extends JFrame {
         String name = sc.next();
 
         int l = name.length();
-        if (0 < l && l <= 16) {
+        if (0 < l && l <= 16 && name.matches("[a-zA-Z0-9]+") == true) {
             System.out.println("Welcome " + name + "!");
         } else {
             name = "Guest";
@@ -82,6 +82,10 @@ public class App extends JFrame {
 
     public void togglePause() {
         isPaused = !isPaused;
+    }
+
+    public String getPlayerName() { 
+        return playerName;
     }
 
     private void initControls() {
@@ -141,6 +145,9 @@ public class App extends JFrame {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
 
+        
+        java.awt.Font originalFont = g2d.getFont();
+
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
@@ -180,19 +187,17 @@ public class App extends JFrame {
         }
 
         drawNextMino(g2d, nextMino);
-<<<<<<< HEAD
-=======
-
-        // ライン消去のメッセージを描画
->>>>>>> b59201d154b2b84a0b461dc5f8967c7e027a2f8e
         drawClearLineMessage(g2d, ga.getLastClearedLines());
 
-        // �V�����R�[�h�F?���O3���I�r�s��
+        
         drawTop3Leaderboard(g2d);
 
         g2d.setColor(Color.BLACK);
-        g2d.setFont(g2d.getFont().deriveFont(java.awt.Font.BOLD));
+        g2d.setFont(originalFont.deriveFont(java.awt.Font.BOLD));
         g2d.drawString("TCS_B group", getWidth() - 100, getHeight() - 30);
+
+        
+        g2d.setFont(originalFont);
     }
 
     private void drawNextMino(Graphics2D g2d, Mino nextMino) {
@@ -200,7 +205,7 @@ public class App extends JFrame {
         int offsetY = 150;
 
         g2d.setColor(Color.BLACK);
-        g2d.drawString("Next Mino:", offsetX, offsetY - 20);
+        g2d.drawString("Next Mino:", offsetX, offsetY - 10);
 
         for (int y = 0; y < nextMino.getMinoSize(); y++) {
             for (int x = 0; x < nextMino.getMinoSize(); x++) {
@@ -229,23 +234,33 @@ public class App extends JFrame {
                 break;
             case 3:
                 message = "Perfect";
-                color = new Color(255, 215, 0); // ゴールド
+                color = new Color(255, 215, 0); // ���F
                 break;
             default:
                 return;
         }
+
+               
+        java.awt.Font originalFont = g2d.getFont();
+
         g2d.setColor(color);
-        g2d.setFont(g2d.getFont().deriveFont(30f));
-            g2d.drawString(message, getWidth() / 2 - 50, getHeight() / 2);
+        g2d.setFont(originalFont.deriveFont(30f));
+        g2d.drawString(message, getWidth() / 2 - 50, getHeight() / 2);
+
+       
+        g2d.setFont(originalFont);
     }
 
-    // �V�������\�b�h�F�g�b�v3���[�_�[�{�[�h��`�悷�郁�\�b�h
+ 
     private void drawTop3Leaderboard(Graphics2D g2d) {
         int offsetX = 400;
         int offsetY = 300;
 
+        
+        java.awt.Font originalFont = g2d.getFont();
+
         g2d.setColor(Color.BLACK);
-        g2d.drawString("Top 3:", offsetX, offsetY - 20);
+        g2d.drawString("Top 3:", offsetX, offsetY - 15);
 
         int leaderboardSize = Math.min(leaderboard.size(), 3);
         for (int i = 0; i < leaderboardSize; i++) {
@@ -253,27 +268,28 @@ public class App extends JFrame {
             String entryText = String.format("%d. Player:%s       Score:%d", i + 1, entry.getPlayerName(), entry.getScore());
             g2d.drawString(entryText, offsetX, offsetY + (i * 20));
         }
+
+       
+        g2d.setFont(originalFont);
     }
 
-    // ゲーム終了時の処理
+    
     public void gameOver() {
-        // リーダーボードにスコアを追加
         leaderboard.add(new LeaderboardEntry(playerName, ga.getScore()));
-        // スコアの降順にソート
         Collections.sort(leaderboard, new Comparator<LeaderboardEntry>() {
             public int compare(LeaderboardEntry e1, LeaderboardEntry e2) {
                 return Integer.compare(e2.getScore(), e1.getScore());
             }
         });
 
-        // リーダーボードをファイルに保存
+    
         saveLeaderboard();
 
-        // リーダーボードの表示
+        
         displayLeaderboard();
     }
 
-    // リーダーボードの表示
+   
     private void displayLeaderboard() {
         System.out.println("Leaderboard:");
         for (int i = 0; i < Math.min(leaderboard.size(), 10); i++) {
@@ -282,7 +298,7 @@ public class App extends JFrame {
         }
     }
 
-    // リーダーボードをファイルに保存
+    
     private void saveLeaderboard() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(LEADERBOARD_FILE))) {
             oos.writeObject(leaderboard);
@@ -291,14 +307,14 @@ public class App extends JFrame {
         }
     }
 
-    // リーダーボードをファイルから読み込み
+    
     @SuppressWarnings("unchecked")
     private ArrayList<LeaderboardEntry> loadLeaderboard() {
         ArrayList<LeaderboardEntry> leaderboard = new ArrayList<>();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(LEADERBOARD_FILE))) {
             leaderboard = (ArrayList<LeaderboardEntry>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            // ファイルが存在しない場合、または読み込めない場合は空のリストを返す
+            
         }
         return leaderboard;
     }

@@ -109,7 +109,7 @@ public class GameArea {
     public void drawField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
-                System.out.printf("%s", (field[y][x] == 1 ? "ï¿½ï¿½" : "ï¿½ï¿½"));
+                System.out.printf("%s", (field[y][x] == 1 ? "?¿½?¿½" : "?¿½?¿½"));
             }
             System.out.println();
         }
@@ -245,7 +245,7 @@ public class GameArea {
                 score = Math.min(score + 300, intMax);
                 break;
             case 4:
-                                score = Math.min(score + 1200, intMax);
+                score = Math.min(score + 1200, intMax);
                 break;
             default:
                 score += 0;
