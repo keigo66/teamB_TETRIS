@@ -8,10 +8,12 @@ public class GameThread extends Thread {
     private Mino mino;
     private Mino nextMino;
     private App app;
+    private int difficultyLevel = 1;
+    private int sleepTime = 1000;
 
     public GameThread(Mino mino, GameArea ga, Mino nextMino, App app) {
         this.mino = mino;
-        this.ga = ga;
+         this.ga = ga;
         this.nextMino = nextMino;
         this.app = app;
     }
@@ -27,7 +29,7 @@ public class GameThread extends Thread {
         while (true) {
             if (app.isPaused()) {
                 try {
-                    Thread.sleep(100); // ?’â??Šu100Ÿ|•b??ˆêŽŸ¥”Û‰ø?
+                    Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GameThread.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -60,11 +62,22 @@ public class GameThread extends Thread {
             System.out.println("NextMino");
             ga.drawNextMino(nextMino);
 
+            increaseDifficulty();
+
             try {
-                Thread.sleep(1000);
+                Thread.sleep(sleepTime);
             } catch (InterruptedException ex) {
                 Logger.getLogger(GameThread.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    private void increaseDifficulty() {
+        int score = ga.getScore();
+        int newLevel = score / 1000 + 1;
+        if (newLevel > difficultyLevel) {
+            difficultyLevel = newLevel;
+            sleepTime = Math.max(1000 - (difficultyLevel - 1) * 100, 100);
         }
     }
 }

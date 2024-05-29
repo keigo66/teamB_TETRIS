@@ -14,6 +14,7 @@ public class GameArea {
     private int score = 0;
     private int linecount = 0;
     private String name;
+    private int lastClearedLines = 0; // 上次消除的行数
 
     public GameArea() {
         this.field = new int[grandHight][grandWidth];
@@ -85,7 +86,7 @@ public class GameArea {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 field[y][x] = bufferField[y][x];
-                fieldColors[y][x] = bufferFieldColors[y][x]; // 初始化?色数?
+                fieldColors[y][x] = bufferFieldColors[y][x];
             }
         }
     }
@@ -94,7 +95,7 @@ public class GameArea {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 bufferField[y][x] = 0;
-                bufferFieldColors[y][x] = null; // 初始化?冲区?色数?
+                bufferFieldColors[y][x] = null;
             }
         }
         for (int y = 0; y < getFieldHight(); y++) {
@@ -156,7 +157,7 @@ public class GameArea {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
                     this.bufferField[mino.getMinoY() + y][mino.getMinoX() + x] = 1;
-                    this.bufferFieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor(); // ?置?冲区?色
+                    this.bufferFieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor();
                 }
             }
         }
@@ -165,9 +166,15 @@ public class GameArea {
     public boolean isCollison(Mino mino) {
         for (int r = 0; r < mino.getMinoSize(); r++) {
             for (int c = 0; c < mino.getMinoSize(); c++) {
-                if (this.bufferField[mino.getMinoY() + r + 1][mino.getMinoX() + c] == 1
-                        && mino.getMino()[mino.getMinoAngle()][r][c] == 1) {
-                    return true;
+                if (mino.getMino()[mino.getMinoAngle()][r][c] == 1) {
+                    int newY = mino.getMinoY() + r + 1;
+                    int newX = mino.getMinoX() + c;
+                    if (newY < 0 || newY >= getFieldHight() || newX < 0 || newX >= getFieldWidth()) {
+                        return true;
+                    }
+                    if (this.bufferField[newY][newX] == 1) {
+                        return true;
+                    }
                 }
             }
         }
@@ -180,8 +187,11 @@ public class GameArea {
                 if (mino.getMino()[_angle][r][c] == 1) {
                     int checkX = _x + c;
                     int checkY = _y + r;
-                                       if (checkX < 0 || checkX >= getFieldWidth() || checkY < 0 || checkY >= getFieldHight()) {
+                    if (checkX < 0 || checkX >= getFieldWidth() || checkY < 0 || checkY >= getFieldHight()) {
                         return true;
+                    }
+                    if (checkX < 0 || checkX >= getFieldWidth() || checkY < 0 || checkY >= getFieldHight()) {
+                        continue;
                     }
                     if (getBufferField()[checkY][checkX] == 1) {
                         return true;
@@ -194,7 +204,7 @@ public class GameArea {
 
     public void eraseLine() {
         boolean isFill;
-        int linesCleared = 0; // ??消除的行数
+        int linesCleared = 0;
 
         for (int y = getFieldHight() - 2; y > 0; y--) {
             isFill = true;
@@ -206,7 +216,6 @@ public class GameArea {
             }
             if (isFill) {
                 linesCleared++;
-                // 消除行
                 for (int _y = y; _y > 0; _y--) {
                     for (int x = 1; x < getFieldWidth() - 1; x++) {
                         bufferField[_y][x] = bufferField[_y - 1][x];
@@ -217,6 +226,7 @@ public class GameArea {
             }
         }
 
+        lastClearedLines = linesCleared; // ???次消除的行数
         addScore(linesCleared);
     }
 
@@ -234,12 +244,16 @@ public class GameArea {
                 score = Math.min(score + 300, intMax);
                 break;
             case 4:
-                score = Math.min(score + 1200, intMax);
+                                score = Math.min(score + 1200, intMax);
                 break;
             default:
                 score += 0;
                 break;
         }
+    }
+
+    public int getLastClearedLines() {
+        return lastClearedLines;
     }
 
     public void moveDown(Mino mino) {
@@ -257,6 +271,8 @@ public class GameArea {
     }
 
     public void rotation(Mino mino) {
-        mino.setMinoAngle((mino.getMinoAngle() + 1) % mino.getMinoAngleSize());
+        if (!isCollison(mino, mino.getMinoX(), mino.getMinoY(), (mino.getMinoAngle() + 1) % mino.getMinoAngleSize())) {
+            mino.setMinoAngle((mino.getMinoAngle() + 1) % mino.getMinoAngleSize());
+        }
     }
 }
