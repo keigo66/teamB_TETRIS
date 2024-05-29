@@ -85,7 +85,7 @@ classDiagram
         + LeaderboardEntry(String playerName,int score)
 
     }
-     Appクラス  --> GameLeaderboardEntryクラス
+     Appクラス  --> LeaderboardEntryクラス
     Appクラス  --> GameThreadクラス
     Appクラス  --> GameAreaクラス
     GameThreadクラス --> GameAreaクラス
