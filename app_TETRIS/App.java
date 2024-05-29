@@ -234,7 +234,11 @@ public class App extends JFrame {
                 break;
             case 3:
                 message = "Perfect";
+<<<<<<< HEAD
                 color = new Color(255, 215, 0); 
+=======
+                color = new Color(255, 215, 0); // ���F
+>>>>>>> 8a3b351ab65ad85bf8ac63d442022b678f268d48
                 break;
             default:
                 return;

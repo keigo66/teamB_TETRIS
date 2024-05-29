@@ -45,7 +45,11 @@ public class GameThread extends Thread {
                     System.out.println("GameOver");
                     System.out.println("Your score: " + ga.getScore());
                     System.out.println("Name: "+app.getPlayerName());
+<<<<<<< HEAD
                     app.gameOver(); 
+=======
+                    app.gameOver(); // �Q�[���I�[�o�[���Ƀ��[�_�[�{�[�h��\��
+>>>>>>> 8a3b351ab65ad85bf8ac63d442022b678f268d48
                     System.exit(0);
                 }
 
