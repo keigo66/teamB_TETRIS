@@ -228,14 +228,14 @@ public class App extends JFrame {
         switch (linesCleared) {
             case 1:
                message =playerName +","+ "Stay Rocks!";
-               color = Color.WHITE;
+               color = Color.RED;
                 break;
             case 2:
-                message =playerName +","+"Stay gold!";
-                color = Color.RED;
+                 message =playerName +","+ "Who cares?";
+                 color = Color.WHITE;
                 break;
             case 3:
-                message =playerName +","+ "Who cares?";
+                message =playerName +","+"Stay gold!";
                 color = new Color(255, 215, 0); 
                 break;
             default:
