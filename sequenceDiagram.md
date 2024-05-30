@@ -12,7 +12,6 @@ sequenceDiagram
     datFile ->>Leaderboard :loadLeaderboard()
     Leaderboard ->>App :this.leaderboard = loadLeaderboard()
     User->>App: main() メソッドを呼び出す
-    App->>App: new App(playerName)
     App->>GameThread: start()
 
     %% ミノの操作
