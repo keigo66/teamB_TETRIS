@@ -44,13 +44,11 @@ public class GameThread extends Thread {
                 if (mino.getMinoY() <= 1) {
                     System.out.println("GameOver");
                     System.out.println("Your score: " + ga.getScore());
-                    System.out.println("Name: "+app.getPlayerName());
-<<<<<<< HEAD
-                    app.gameOver(); 
-=======
-                    app.gameOver(); // �Q�[���I�[�o�[���Ƀ��[�_�[�{�[�h��\��
->>>>>>> 8a3b351ab65ad85bf8ac63d442022b678f268d48
-                    System.exit(0);
+                    System.out.println("Name: " + app.getPlayerName());
+                    System.out.println("Encouragement: " + app.getRandomEncouragementMessage());
+
+                    app.gameOver();
+                    return;  // Terminate the thread without exiting the application
                 }
 
                 ga.bufferFieldAddMino(mino);
